@@ -1,0 +1,78 @@
+/*
+ * Splash screen animation kit — app-level styles, kept out of the shared UI
+ * package on purpose. Timings pair with src/components/splash-screen.tsx:
+ * the loading bar fills over 2s, then the overlay fades out in 350ms.
+ */
+
+/* Overlay */
+@keyframes splash-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes splash-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.splash-screen {
+    animation: splash-fade-in 0.45s ease both;
+}
+
+.splash-screen.is-exiting {
+    animation: splash-fade-out 0.35s ease forwards;
+}
+
+/* Icon: rises and scales in, then floats gently */
+@keyframes splash-pop {
+    from { opacity: 0; transform: scale(0.86); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes splash-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+.splash-pop {
+    animation: splash-pop 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.splash-float {
+    animation: splash-float 2.4s ease-in-out 0.65s infinite;
+}
+
+/* Glow behind the icon: a slow breathing halo in the brand green */
+@keyframes splash-glow {
+    from { opacity: 0.45; transform: scale(0.94); }
+    to { opacity: 0.9; transform: scale(1.06); }
+}
+
+.splash-glow {
+    animation: splash-glow 2.4s ease-in-out 0.65s infinite alternate both;
+}
+
+/* Loading line: fills left to right over exactly 2s, with a soft sheen */
+@keyframes splash-fill {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+@keyframes splash-shimmer {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
+
+.splash-fill {
+    animation: splash-fill 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.splash-shimmer {
+    background: linear-gradient(
+        100deg,
+        transparent 25%,
+        rgb(255 255 255 / 0.45) 50%,
+        transparent 75%
+    );
+    animation: splash-shimmer 1.6s linear infinite;
+}

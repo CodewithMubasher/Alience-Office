@@ -1,11 +1,15 @@
 import { Table2 } from "lucide-react"
 
+import { SplashScreen } from "@/components/splash-screen"
+import { Ribbon } from "@/components/ribbon/ribbon"
 import { Topbar } from "@/components/topbar"
 
 export function App() {
   return (
     <div className="flex h-svh flex-col overflow-hidden">
+      <SplashScreen />
       <Topbar />
+      <Ribbon />
       <main className="flex flex-1 items-center justify-center bg-muted/40 p-6">
         <div className="flex max-w-sm flex-col items-center gap-3 text-center">
           <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
