@@ -1,0 +1,6 @@
+# Verbatim-ported upstream code (ADR-0001) must keep its upstream formatting,
+# so `pnpm format` never rewrites it. Only our own glue is formatted.
+src/core/
+src/lib/
+src/vendor/
+tests/

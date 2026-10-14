@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@workspace/spreadsheet",
   "version": "0.0.1",
   "type": "module",
   "private": true,
@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@workspace/spreadsheet-core": "workspace:*",
     "@workspace/ui": "workspace:*",
     "lucide-react": "^1.56.0",
     "react": "^19.3.0",

@@ -6,6 +6,11 @@ import { defineConfig } from "vite"
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // Fixed port so all five suite apps can run side by side (`turbo dev`).
+  server: {
+    port: 5177,
+    strictPort: true,
+  },
   resolve: {
     alias: {
       "@": resolve(import.meta.dirname, "./src"),

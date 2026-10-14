@@ -1,0 +1,26 @@
+{
+  "name": "@workspace/spreadsheet-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Spreadsheet engine ported verbatim from HeyPuter/everything (MIT) — see LICENSE and THIRD_PARTY_NOTICES.md",
+  "exports": {
+    ".": "./src/index.js",
+    "./core/*": "./src/core/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,cjs}\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10",
+    "eslint": "^10",
+    "globals": "^17",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8"
+  }
+}
