@@ -1,19 +1,23 @@
-import { Button } from "@workspace/ui/components/button"
+import { Table2 } from "lucide-react"
+
+import { Topbar } from "@/components/topbar"
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    <div className="flex h-svh flex-col overflow-hidden">
+      <Topbar />
+      <main className="flex flex-1 items-center justify-center bg-muted/40 p-6">
+        <div className="flex max-w-sm flex-col items-center gap-3 text-center">
+          <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Table2 className="size-5" />
+          </span>
+          <h1 className="text-lg font-semibold">The grid goes here</h1>
+          <p className="text-sm text-muted-foreground">
+            Next up: the ported engine lands and the virtualized grid, formula
+            bar, and sheet tabs take over this space.
+          </p>
         </div>
-        <div className="text-muted-foreground font-mono text-xs">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
+      </main>
     </div>
   )
 }
