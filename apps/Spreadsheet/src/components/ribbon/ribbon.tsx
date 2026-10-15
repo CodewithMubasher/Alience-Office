@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { HomeRibbon } from "./home-ribbon"
+import { InsertRibbon } from "./insert-ribbon"
 import { RIBBON_TABS } from "./ribbon-data"
 
 /** An empty command slot: where a real button goes once the engine lands. */
@@ -18,9 +19,10 @@ const GHOST_LARGE =
  * panel card (rounded, shadowed, 8px in from the edges) of group columns
  * split by hairlines — group captions are not drawn, as in the reference's
  * chrome, the groups naming themselves to assistive technology. UI-first
- * milestone: the Home tab is filled (home-ribbon.tsx), other tabs show
- * placeholder slots (docs/spreadsheet-plan.md, Phase 1). The chevron — or a
- * double-click on a tab, as in the reference — collapses the card.
+ * milestone: the Home (home-ribbon.tsx) and Insert (insert-ribbon.tsx) tabs
+ * are filled, other tabs show placeholder slots (docs/spreadsheet-plan.md,
+ * Phase 1). The chevron — or a double-click on a tab, as in the reference —
+ * collapses the card.
  */
 export function Ribbon() {
   const [active, setActive] = useState(RIBBON_TABS[0].id)
@@ -125,6 +127,8 @@ export function Ribbon() {
           <div className="flex h-full w-max items-stretch">
             {current.id === "home" ? (
               <HomeRibbon />
+            ) : current.id === "insert" ? (
+              <InsertRibbon />
             ) : (
               current.groups.map((group) => (
                 <div

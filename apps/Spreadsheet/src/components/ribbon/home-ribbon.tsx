@@ -1,4 +1,3 @@
-import type { ReactNode } from "react"
 import { ChevronDown } from "lucide-react"
 
 import {
@@ -6,7 +5,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
 import {
@@ -19,6 +17,18 @@ import {
 import { cn } from "@workspace/ui/lib/utils"
 
 import { RibbonIcon } from "../../ribbon-icons/ribbon-icon"
+import {
+  Divider,
+  Group,
+  LargeSplit,
+  Row,
+  Stack,
+  Tb,
+  TbLargeMenu,
+  TbMenu,
+  TbSplitMenu,
+  type MenuItem,
+} from "./ribbon-kit"
 
 /**
  * The Home tab, rebuilt to the reference's exact layout
@@ -83,414 +93,166 @@ const THEME_COLORS = [
   "#ed7d31", "#a5a5a5", "#ffc000", "#5b9bd5", "#70ad47",
 ]
 
-type Item = { l: string; g?: string }
-/** `"sep"` draws a divider, as the reference's menu items do. */
-type MenuItem = Item | "sep"
-
 /* ---------- menu contents (labels and glyphs as in the reference) ---------- */
 
 const PASTE: MenuItem[] = [
-  { l: "Paste", g: "paste" },
-  { l: "Paste Values", g: "toValues" },
-  { l: "Paste Formulas", g: "fx" },
+  { label: "Paste", glyph: "paste" },
+  { label: "Paste Values", glyph: "toValues" },
+  { label: "Paste Formulas", glyph: "fx" },
   "sep",
-  { l: "Transpose", g: "swap" },
+  { label: "Transpose", glyph: "swap" },
 ]
 const BORDERS: MenuItem[] = [
-  { l: "All borders", g: "borders" },
-  { l: "Outer borders", g: "borderOuter" },
-  { l: "Inner borders", g: "borderInner" },
-  { l: "Horizontal borders", g: "rows" },
-  { l: "Vertical borders", g: "cols" },
+  { label: "All borders", glyph: "borders" },
+  { label: "Outer borders", glyph: "borderOuter" },
+  { label: "Inner borders", glyph: "borderInner" },
+  { label: "Horizontal borders", glyph: "rows" },
+  { label: "Vertical borders", glyph: "cols" },
   "sep",
-  { l: "Top border", g: "borderTop" },
-  { l: "Bottom border", g: "borderBottom" },
-  { l: "Left border", g: "borderLeft" },
-  { l: "Right border", g: "borderRight" },
+  { label: "Top border", glyph: "borderTop" },
+  { label: "Bottom border", glyph: "borderBottom" },
+  { label: "Left border", glyph: "borderLeft" },
+  { label: "Right border", glyph: "borderRight" },
   "sep",
-  { l: "Thick outside borders", g: "borderOuter" },
-  { l: "Bottom double border", g: "borderBottom" },
-  { l: "Thick bottom border", g: "borderBottom" },
+  { label: "Thick outside borders", glyph: "borderOuter" },
+  { label: "Bottom double border", glyph: "borderBottom" },
+  { label: "Thick bottom border", glyph: "borderBottom" },
   "sep",
-  { l: "Border color…", g: "textColor" },
-  { l: "Border style…", g: "borderBottom" },
+  { label: "Border color…", glyph: "textColor" },
+  { label: "Border style…", glyph: "borderBottom" },
   "sep",
-  { l: "No borders", g: "borderNone" },
-  { l: "More borders…", g: "sliders" },
+  { label: "No borders", glyph: "borderNone" },
+  { label: "More borders…", glyph: "sliders" },
 ]
 const ORIENTATION: MenuItem[] = [
-  { l: "Angle Counterclockwise" },
-  { l: "Angle Clockwise" },
-  { l: "Rotate Text Up" },
-  { l: "Rotate Text Down" },
+  { label: "Angle Counterclockwise" },
+  { label: "Angle Clockwise" },
+  { label: "Rotate Text Up" },
+  { label: "Rotate Text Down" },
   "sep",
-  { l: "Format Cell Alignment…", g: "formatCells" },
+  { label: "Format Cell Alignment…", glyph: "formatCells" },
 ]
 const MERGE: MenuItem[] = [
-  { l: "Merge & Center", g: "merge" },
-  { l: "Merge Across", g: "rows" },
-  { l: "Merge Cells", g: "merge" },
+  { label: "Merge & Center", glyph: "merge" },
+  { label: "Merge Across", glyph: "rows" },
+  { label: "Merge Cells", glyph: "merge" },
   "sep",
-  { l: "Unmerge Cells", g: "unmerge" },
+  { label: "Unmerge Cells", glyph: "unmerge" },
 ]
 const ACCOUNTING: MenuItem[] = [
-  { l: "$ English (United States)" },
-  { l: "£ English (United Kingdom)" },
-  { l: "€ Euro (€ 123)" },
-  { l: "¥ Chinese (PRC)" },
-  { l: "CHF French (Switzerland)" },
+  { label: "$ English (United States)" },
+  { label: "£ English (United Kingdom)" },
+  { label: "€ Euro (€ 123)" },
+  { label: "¥ Chinese (PRC)" },
+  { label: "CHF French (Switzerland)" },
   "sep",
-  { l: "More Accounting Formats…", g: "formatCells" },
+  { label: "More Accounting Formats…", glyph: "formatCells" },
 ]
 const CF: MenuItem[] = [
-  { l: "Top 10 Items…" },
-  { l: "Bottom 10 Items…" },
+  { label: "Top 10 Items…" },
+  { label: "Bottom 10 Items…" },
   "sep",
-  { l: "Data Bars" },
-  { l: "Color Scales" },
+  { label: "Data Bars" },
+  { label: "Color Scales" },
   "sep",
-  { l: "New Rule…" },
-  { l: "Clear Rules from All Cells" },
+  { label: "New Rule…" },
+  { label: "Clear Rules from All Cells" },
 ]
 const TABLE_STYLE: MenuItem[] = [
-  { l: "New Table Style…" },
-  { l: "New Cell Style…" },
+  { label: "New Table Style…" },
+  { label: "New Cell Style…" },
 ]
 const CELL_STYLES: MenuItem[] = [
-  { l: "Normal" },
-  { l: "Bad" },
-  { l: "Good" },
-  { l: "Neutral" },
-  { l: "Warning" },
+  { label: "Normal" },
+  { label: "Bad" },
+  { label: "Good" },
+  { label: "Neutral" },
+  { label: "Warning" },
   "sep",
-  { l: "Heading 1" },
-  { l: "Title" },
-  { l: "Total" },
+  { label: "Heading 1" },
+  { label: "Title" },
+  { label: "Total" },
 ]
 const INSERT: MenuItem[] = [
-  { l: "Insert Cells…", g: "insertCells" },
-  { l: "Insert Copied Cells…", g: "paste" },
+  { label: "Insert Cells…", glyph: "insertCells" },
+  { label: "Insert Copied Cells…", glyph: "paste" },
   "sep",
-  { l: "Insert Sheet Rows", g: "rows" },
-  { l: "Insert Sheet Columns", g: "cols" },
+  { label: "Insert Sheet Rows", glyph: "rows" },
+  { label: "Insert Sheet Columns", glyph: "cols" },
   "sep",
-  { l: "Insert Sheet", g: "insertSheet" },
+  { label: "Insert Sheet", glyph: "insertSheet" },
 ]
 const DELETE: MenuItem[] = [
-  { l: "Delete Cells…", g: "deleteCells" },
+  { label: "Delete Cells…", glyph: "deleteCells" },
   "sep",
-  { l: "Delete Sheet Rows", g: "deleteRows" },
-  { l: "Delete Sheet Columns", g: "deleteCols" },
+  { label: "Delete Sheet Rows", glyph: "deleteRows" },
+  { label: "Delete Sheet Columns", glyph: "deleteCols" },
   "sep",
-  { l: "Delete Sheet", g: "deleteSheet" },
+  { label: "Delete Sheet", glyph: "deleteSheet" },
 ]
 const FORMAT_CELLS: MenuItem[] = [
-  { l: "Row Height…", g: "rowHeight" },
-  { l: "Column Width…", g: "colWidth" },
+  { label: "Row Height…", glyph: "rowHeight" },
+  { label: "Column Width…", glyph: "colWidth" },
   "sep",
-  { l: "Hide & Unhide", g: "hideEye" },
-  { l: "Rename Sheet…" },
+  { label: "Hide & Unhide", glyph: "hideEye" },
+  { label: "Rename Sheet…" },
   "sep",
-  { l: "Format Cells…", g: "formatCells" },
+  { label: "Format Cells…", glyph: "formatCells" },
 ]
 const AUTOSUM: MenuItem[] = [
-  { l: "Sum", g: "sigma" },
-  { l: "Average", g: "math" },
-  { l: "Count Numbers", g: "stats" },
-  { l: "Max" },
-  { l: "Min" },
+  { label: "Sum", glyph: "sigma" },
+  { label: "Average", glyph: "math" },
+  { label: "Count Numbers", glyph: "stats" },
+  { label: "Max" },
+  { label: "Min" },
   "sep",
-  { l: "More Functions…", g: "fx" },
+  { label: "More Functions…", glyph: "fx" },
 ]
 const FILL: MenuItem[] = [
-  { l: "Down", g: "fillDown" },
-  { l: "Right", g: "fillRight" },
-  { l: "Up", g: "fillUp" },
-  { l: "Left", g: "fillLeft" },
+  { label: "Down", glyph: "fillDown" },
+  { label: "Right", glyph: "fillRight" },
+  { label: "Up", glyph: "fillUp" },
+  { label: "Left", glyph: "fillLeft" },
   "sep",
-  { l: "Across Worksheets" },
-  { l: "Series…" },
+  { label: "Across Worksheets" },
+  { label: "Series…" },
 ]
 const CLEAR: MenuItem[] = [
-  { l: "Clear All", g: "eraser" },
-  { l: "Clear Formats", g: "resetStyle" },
-  { l: "Clear Contents" },
+  { label: "Clear All", glyph: "eraser" },
+  { label: "Clear Formats", glyph: "resetStyle" },
+  { label: "Clear Contents" },
   "sep",
-  { l: "Clear Comments and Notes", g: "deleteNote" },
-  { l: "Clear Hyperlinks", g: "unlink" },
+  { label: "Clear Comments and Notes", glyph: "deleteNote" },
+  { label: "Clear Hyperlinks", glyph: "unlink" },
 ]
 const SORT: MenuItem[] = [
-  { l: "Sort A to Z", g: "sortAsc" },
-  { l: "Sort Z to A", g: "sortDesc" },
+  { label: "Sort A to Z", glyph: "sortAsc" },
+  { label: "Sort Z to A", glyph: "sortDesc" },
   "sep",
-  { l: "Custom Sort…", g: "sliders" },
+  { label: "Custom Sort…", glyph: "sliders" },
   "sep",
-  { l: "Filter", g: "filter" },
-  { l: "Subtotals…", g: "sigma" },
-  { l: "Create table…", g: "table" },
-  { l: "Remove duplicate rows…", g: "dedupe" },
+  { label: "Filter", glyph: "filter" },
+  { label: "Subtotals…", glyph: "sigma" },
+  { label: "Create table…", glyph: "table" },
+  { label: "Remove duplicate rows…", glyph: "dedupe" },
   "sep",
-  { l: "Pivot table…", g: "pivot" },
-  { l: "Goal seek…", g: "sliders" },
-  { l: "Data analysis…", g: "dataAnalysis" },
+  { label: "Pivot table…", glyph: "pivot" },
+  { label: "Goal seek…", glyph: "sliders" },
+  { label: "Data analysis…", glyph: "dataAnalysis" },
 ]
 const FIND: MenuItem[] = [
-  { l: "Find…", g: "find" },
-  { l: "Replace…", g: "replace" },
-  { l: "Go To…", g: "goTo" },
+  { label: "Find…", glyph: "find" },
+  { label: "Replace…", glyph: "replace" },
+  { label: "Go To…", glyph: "goTo" },
   "sep",
-  { l: "Go To Special…", g: "sliders" },
+  { label: "Go To Special…", glyph: "sliders" },
 ]
 
-/* ---------- ribbon primitives (chrome.css metrics, design-system rounding) ---------- */
-
-/** Small command button: 24px tall, 12px text, `rounded-md` from the tokens. */
-const BTN =
-  "inline-flex h-6 min-w-6 shrink-0 items-center justify-center gap-[5px] rounded-md px-1 text-xs text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 data-[popup-open]:bg-muted"
-
-/** Large command: 74px tall, icon over a two-line 12px label. */
-const LARGE =
-  "flex h-[74px] min-w-12 max-w-[74px] shrink-0 flex-col items-center justify-start gap-0.5 rounded-md px-1 pt-0.5 pb-1 text-xs text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 data-[popup-open]:bg-muted"
-
-/** The reference's 5×5 drop mark (ribbon.css ::after), drawn as a border chevron. */
-function Caret({ large = false }: { large?: boolean }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "size-[5px] shrink-0 rotate-45 border-r-[1.4px] border-b-[1.4px] border-current opacity-70",
-        large ? "-mt-px" : "-mt-[3px] mr-[2px] ml-px"
-      )}
-    />
-  )
-}
-
-/** The explicit chevrons the reference places beside pickers and split arrows. */
-function Chev({
-  size,
-  className,
-}: {
-  size: 10 | 12 | 14
-  className?: string
-}) {
-  return (
-    <ChevronDown
-      aria-hidden="true"
-      size={size}
-      strokeWidth={size === 14 ? 2 : 1.8}
-      className={cn("shrink-0 opacity-60", className)}
-    />
-  )
-}
-
-function Group({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    // As on the reference's Mac-style chrome, the caption is not drawn — the
-    // group still names itself for assistive technology (chrome.css line 47).
-    <div
-      role="group"
-      aria-label={label}
-      className="flex flex-none flex-col border-r border-border px-2 last:border-r-0"
-    >
-      <div className="flex flex-1 items-center gap-1">{children}</div>
-    </div>
-  )
-}
-
-function Stack({
-  rows = false,
-  children,
-}: {
-  rows?: boolean
-  children: ReactNode
-}) {
-  return (
-    <div
-      className={cn(
-        "flex flex-col items-start justify-center",
-        rows ? "gap-2.5" : "gap-[3px]"
-      )}
-    >
-      {children}
-    </div>
-  )
-}
-
-function Row({ children }: { children: ReactNode }) {
-  return <div className="flex items-center gap-px">{children}</div>
-}
-
-function Divider({ tall = false }: { tall?: boolean }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "mx-[3px] w-px shrink-0 bg-border",
-        tall ? "h-14" : "h-5"
-      )}
-    />
-  )
-}
-
-/** Icon command; `size` matches the reference (btn() draws at 18, makeButton at 20). */
-function Tb({
-  icon,
-  size = 18,
-  label,
-  title,
-}: {
-  icon: string
-  size?: number
-  label?: string
-  title: string
-}) {
-  return (
-    <button
-      type="button"
-      title={title}
-      className={cn(BTN, label && "justify-start")}
-    >
-      <RibbonIcon name={icon} size={size} />
-      {label && <span className="whitespace-nowrap">{label}</span>}
-    </button>
-  )
-}
-
-function MenuList({ items }: { items: MenuItem[] }) {
-  return (
-    <DropdownMenuContent align="start" className="min-w-[220px]">
-      {items.map((item, index) =>
-        item === "sep" ? (
-          <DropdownMenuSeparator key={`sep-${index}`} />
-        ) : (
-          <DropdownMenuItem key={`${item.l}-${index}`}>
-            {item.g && <RibbonIcon name={item.g} size={16} />}
-            <span className="truncate">{item.l}</span>
-          </DropdownMenuItem>
-        )
-      )}
-    </DropdownMenuContent>
-  )
-}
-
-/**
- * Menu command: icon (+ optional label) and a drop mark. `chev` uses the
- * explicit 10px chevron (Borders, Orientation); otherwise the 5×5 mark the
- * reference's `ribbon-command[aria-haspopup]` draws.
- */
-function TbMenu({
-  icon,
-  size = 20,
-  label,
-  title,
-  items,
-  chev = false,
-}: {
-  icon: string
-  size?: number
-  label?: string
-  title: string
-  items: MenuItem[]
-  chev?: boolean
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        title={title}
-        className={cn(BTN, label && "justify-start")}
-      >
-        <RibbonIcon name={icon} size={size} />
-        {label && <span className="whitespace-nowrap">{label}</span>}
-        {chev ? <Chev size={10} /> : <Caret />}
-      </DropdownMenuTrigger>
-      <MenuList items={items} />
-    </DropdownMenu>
-  )
-}
-
-/** Primary command of Styles/Editing: the 74px large button with its menu. */
-function TbLargeMenu({
-  icon,
-  label,
-  title,
-  items,
-}: {
-  icon: string
-  label: string
-  title: string
-  items: MenuItem[]
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger title={title} className={LARGE}>
-        <RibbonIcon name={icon} size={32} />
-        <span className="line-clamp-2 text-center leading-[15px] whitespace-normal">
-          {label}
-        </span>
-        <Caret large />
-      </DropdownMenuTrigger>
-      <MenuList items={items} />
-    </DropdownMenu>
-  )
-}
-
-/** Split command: face and arrow in one 24px button (the whole split opens the menu). */
-function TbSplitMenu({
-  faceIcon,
-  faceSize = 20,
-  faceLabel,
-  arrowSize = 12,
-  title,
-  items,
-}: {
-  faceIcon: string
-  faceSize?: number
-  faceLabel?: string
-  arrowSize?: 10 | 12
-  title: string
-  items: MenuItem[]
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        title={title}
-        className="flex h-6 shrink-0 items-stretch overflow-hidden rounded-md text-xs text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 data-[popup-open]:bg-muted"
-      >
-        <span className="flex items-center justify-center gap-[5px] px-1">
-          <RibbonIcon name={faceIcon} size={faceSize} />
-          {faceLabel && <span className="whitespace-nowrap">{faceLabel}</span>}
-        </span>
-        <span className="flex w-4 items-center justify-center">
-          <Chev size={arrowSize} />
-        </span>
-      </DropdownMenuTrigger>
-      <MenuList items={items} />
-    </DropdownMenu>
-  )
-}
+/* ---------- Home-only pieces ---------- */
 
 /** Paste: the large split — a 52px face over a 22px arrow strip. */
 function PasteSplit() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        title="Paste (Ctrl+V)"
-        className="flex h-[74px] min-w-12 max-w-[74px] shrink-0 flex-col overflow-hidden rounded-md text-xs text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 data-[popup-open]:bg-muted"
-      >
-        <span className="flex flex-1 flex-col items-center justify-start gap-0.5 px-1 pt-0.5">
-          <RibbonIcon name="paste" size={32} />
-          <span className="line-clamp-2 text-center leading-[15px] whitespace-normal">
-            Paste
-          </span>
-          <Caret large />
-        </span>
-        <span className="flex h-[22px] w-full items-center justify-center">
-          <Chev size={12} />
-        </span>
-      </DropdownMenuTrigger>
-      <MenuList items={PASTE} />
-    </DropdownMenu>
-  )
+  return <LargeSplit icon="paste" label="Paste" title="Paste (Ctrl+V)" items={PASTE} />
 }
 
 /**

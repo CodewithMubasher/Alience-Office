@@ -4,6 +4,10 @@ import { cn } from "@workspace/ui/lib/utils"
 
 const DropdownMenu = MenuPrimitive.Root
 const DropdownMenuTrigger = MenuPrimitive.Trigger
+const DropdownMenuPortal = MenuPrimitive.Portal
+const DropdownMenuSubmenu = MenuPrimitive.SubmenuRoot
+
+const DropdownMenuSubmenuTrigger = MenuPrimitive.SubmenuTrigger
 
 type DropdownMenuContentProps = React.ComponentProps<
   typeof MenuPrimitive.Popup
@@ -53,6 +57,35 @@ function DropdownMenuItem({
   )
 }
 
+function DropdownMenuSubmenuContent({
+  className,
+  side = "right",
+  align = "start",
+  children,
+  ...props
+}: DropdownMenuContentProps) {
+  return (
+    <MenuPrimitive.Portal>
+      <MenuPrimitive.Positioner
+        side={side}
+        align={align}
+        className="z-50"
+      >
+        <MenuPrimitive.Popup
+          data-slot="dropdown-menu-submenu-content"
+          className={cn(
+            "min-w-40 rounded-md border bg-popover p-1 text-popover-foreground shadow-md outline-none",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </MenuPrimitive.Popup>
+      </MenuPrimitive.Positioner>
+    </MenuPrimitive.Portal>
+  )
+}
+
 function DropdownMenuSeparator({
   className,
   ...props
@@ -87,6 +120,10 @@ export {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSubmenu,
+  DropdownMenuSubmenuContent,
+  DropdownMenuSubmenuTrigger,
   DropdownMenuTrigger,
 }
